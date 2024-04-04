@@ -1,0 +1,1 @@
+export const debounceDuration = 300;

@@ -4,6 +4,9 @@ import {
   BehaviorSubject,
   Observable,
   combineLatest,
+  debounce,
+  debounceTime,
+  distinctUntilChanged,
   map,
   pairwise,
   reduce,
@@ -14,6 +17,7 @@ import {
 import { SpeakerApiService } from '../speaker-api/speaker-api.service';
 import { inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounceDuration } from '../../../../core/forms/constants/debounce-duration.constant';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +34,14 @@ export class SpeakerDataService {
   );
 
   filteredSpeakers$(searchInput: Observable<string>): Observable<Speaker[]> {
-    return combineLatest([this._allSpeakers$, searchInput]).pipe(
+    return combineLatest([
+      this._allSpeakers$,
+      searchInput.pipe(
+        startWith(''),
+        debounceTime(debounceDuration),
+        distinctUntilChanged(),
+      ),
+    ]).pipe(
       map(([speakers, search]) =>
         speakers.filter((speaker) => this.speakerIsSearched(speaker, search))
       )
