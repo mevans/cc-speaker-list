@@ -3,18 +3,28 @@ import { SpeakerApiService } from '../../services/speaker-api/speaker-api.servic
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { SpeakerListComponent } from '../../components/speaker-list/speaker-list.component';
 import { SpeakerDataService } from '../../services/speaker-data/speaker-data.service';
+import {
+  FormControl,
+  FormControlDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { startWith } from 'rxjs';
+import { controlValue$ } from '../../../../core/forms/utils/control-value$';
 
 @Component({
   selector: 'app-speaker-list-page',
   standalone: true,
-  imports: [AsyncPipe, JsonPipe, SpeakerListComponent],
+  imports: [AsyncPipe, JsonPipe, SpeakerListComponent, ReactiveFormsModule],
   templateUrl: './speaker-list-page.component.html',
-  styleUrl: './speaker-list-page.component.scss'
+  styleUrl: './speaker-list-page.component.scss',
 })
 export class SpeakerListPageComponent {
   private speakerDataService = inject(SpeakerDataService);
 
-  speakers$ = this.speakerDataService.speakers$;
+  searchInput = new FormControl<string>('');
+  speakers$ = this.speakerDataService.filteredSpeakers$(
+    controlValue$(this.searchInput)
+  );
 
   onNextPage() {
     this.speakerDataService.nextPage();
