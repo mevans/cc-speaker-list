@@ -1,5 +1,3 @@
-<p>speaker-list-page works!</p>
-
 @if (speakers$ | async; as speakers) {
-    {{speakers | json}}
+    <app-speaker-list [speakers]="speakers"></app-speaker-list>
 }
