@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { BaseApiUrl } from './core/tokens/base-api-url.token';
 import { environment } from '../environment/environment';
+import { ApiSeed } from './core/tokens/api-seed.token';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +15,9 @@ export const appConfig: ApplicationConfig = {
       provide: BaseApiUrl,
       useValue: environment.baseApiUrl,
     },
+    {
+      provide: ApiSeed,
+      useValue: environment.apiSeed,
+    }
   ],
 };
