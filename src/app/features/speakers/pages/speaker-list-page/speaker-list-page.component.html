@@ -1,1 +1,5 @@
 <p>speaker-list-page works!</p>
+
+@if (speakers$ | async; as speakers) {
+    {{speakers | json}}
+}
