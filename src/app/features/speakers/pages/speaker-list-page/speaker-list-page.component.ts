@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { SpeakerApiService } from '../../services/speaker-api/speaker-api.service';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { SpeakerListComponent } from '../../components/speaker-list/speaker-list.component';
+import { SpeakerDataService } from '../../services/speaker-data/speaker-data.service';
 
 @Component({
   selector: 'app-speaker-list-page',
@@ -11,7 +12,11 @@ import { SpeakerListComponent } from '../../components/speaker-list/speaker-list
   styleUrl: './speaker-list-page.component.scss'
 })
 export class SpeakerListPageComponent {
-  private speakerApiService = inject(SpeakerApiService);
+  private speakerDataService = inject(SpeakerDataService);
 
-  speakers$ = this.speakerApiService.getSpeakers();
+  speakers$ = this.speakerDataService.speakers$;
+
+  onNextPage() {
+    this.speakerDataService.nextPage();
+  }
 }

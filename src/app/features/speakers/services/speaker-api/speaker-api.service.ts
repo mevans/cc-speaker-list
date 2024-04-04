@@ -17,7 +17,7 @@ export class SpeakerApiService {
 
   getSpeakers(
     page: number = 1,
-    results: number = 20,
+    results: number = 2,
   ): Observable<Speaker[]> {
     return this.httpClient.get<SpeakerResponse>(
       this.baseUrl,

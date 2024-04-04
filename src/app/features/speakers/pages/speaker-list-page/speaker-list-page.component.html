@@ -1,3 +1,4 @@
 @if (speakers$ | async; as speakers) {
     <app-speaker-list [speakers]="speakers"></app-speaker-list>
+    <button (click)="onNextPage()">Next page</button>
 }
