@@ -10,11 +10,12 @@ import {
 } from '@angular/forms';
 import { startWith } from 'rxjs';
 import { controlValue$ } from '../../../../core/forms/utils/control-value$';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-speaker-list-page',
   standalone: true,
-  imports: [AsyncPipe, JsonPipe, SpeakerListComponent, ReactiveFormsModule],
+  imports: [AsyncPipe, JsonPipe, SpeakerListComponent, ReactiveFormsModule, RouterOutlet],
   templateUrl: './speaker-list-page.component.html',
   styleUrl: './speaker-list-page.component.scss',
 })

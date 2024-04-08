@@ -1,7 +1,7 @@
-@for (speaker of speakers; track speaker.id.value) {
-<section>
-  <span>
-    {{ speaker.name.title }} {{ speaker.name.first }} {{ speaker.name.last }}
-  </span>
-</section>
+@for (speaker of speakers; track speaker.id) {
+<a [routerLink]="['/speakers', speaker.id]">
+  <div>
+    {{speaker.id}} {{ speaker.name.title }} {{ speaker.name.first }} {{ speaker.name.last }}
+  </div>
+</a>
 }

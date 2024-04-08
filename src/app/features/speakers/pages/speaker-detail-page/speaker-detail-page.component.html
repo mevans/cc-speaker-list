@@ -1,0 +1,5 @@
+<app-dialog (close)="onClose()">
+    @if (speaker$ | async; as speaker) {
+        <div>{{ speaker.name | json}}</div>
+    }
+</app-dialog>

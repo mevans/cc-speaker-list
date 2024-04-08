@@ -30,9 +30,6 @@ export type Speaker = {
   };
   phone: string;
   cell: string;
-  id: {
-    name: string;
-    value: string;
-  };
+  id: number;
   nat: string;
 };

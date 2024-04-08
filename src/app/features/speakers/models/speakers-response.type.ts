@@ -1,7 +1,7 @@
 import { Speaker } from './speaker.type';
 
 export type SpeakerResponse = {
-  results: Speaker[];
+  results: Omit<Speaker, 'id'>[];
   info: {
     seed: string;
     results: number;

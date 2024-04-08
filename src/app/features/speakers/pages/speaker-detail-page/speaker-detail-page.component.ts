@@ -1,0 +1,29 @@
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { DialogComponent } from '../../../../core/dialogs/dialog/dialog.component';
+import { SpeakerDataService } from '../../services/speaker-data/speaker-data.service';
+import { filter, map, switchMap } from 'rxjs';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+
+@Component({
+  selector: 'app-speaker-detail-page',
+  standalone: true,
+  imports: [RouterLink, DialogComponent, AsyncPipe, JsonPipe],
+  templateUrl: './speaker-detail-page.component.html',
+  styleUrl: './speaker-detail-page.component.scss'
+})
+export class SpeakerDetailPageComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly speakerDataService = inject(SpeakerDataService);
+
+  speaker$ = this.route.paramMap.pipe(
+    map((params) => params.get('id')),
+    filter(Boolean),
+    switchMap((id) => this.speakerDataService.getSpeaker(+id))
+  );
+
+  onClose(): void {
+    this.router.navigate(['../']);
+  }
+}

@@ -9,6 +9,6 @@ export const routes: Routes = [
     },
     {
         path: 'speakers',
-        children: speakerRoutes
+        children: speakerRoutes,
     }
 ];

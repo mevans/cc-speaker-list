@@ -8,11 +8,15 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
+  of,
   pairwise,
   reduce,
   scan,
+  shareReplay,
   startWith,
   switchMap,
+  take,
+  tap,
 } from 'rxjs';
 import { SpeakerApiService } from '../speaker-api/speaker-api.service';
 import { inject } from '@angular/core';
@@ -46,6 +50,10 @@ export class SpeakerDataService {
         speakers.filter((speaker) => this.speakerIsSearched(speaker, search))
       )
     );
+  }
+
+  getSpeaker(id: number): Observable<Speaker | undefined> {
+    return this.speakerApiService.getSpeaker(id);
   }
 
   nextPage() {
