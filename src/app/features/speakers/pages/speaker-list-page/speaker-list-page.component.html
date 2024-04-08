@@ -1,8 +1,13 @@
-<input [formControl]="searchInput" placeholder="Search...">
+<input [formControl]="filters.controls.search" placeholder="Search..." />
 
 @if (speakers$ | async; as speakers) {
-    <app-speaker-list [speakers]="speakers"></app-speaker-list>
-    <button (click)="onNextPage()">Next page</button>
+<app-speaker-list [speakers]="speakers"></app-speaker-list>
 }
+
+<app-paginator
+  [page]="filters.controls.page.value || 1"
+  (next)="onPage(+1)"
+  (previous)="onPage(-1)"
+></app-paginator>
 
 <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 @for (speaker of speakers; track speaker.id) {
-<a [routerLink]="['/speakers', speaker.id]">
+<a [routerLink]="['/speakers', speaker.id]" queryParamsHandling="merge">
   <div>
     {{speaker.id}} {{ speaker.name.title }} {{ speaker.name.first }} {{ speaker.name.last }}
   </div>

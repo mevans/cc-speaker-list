@@ -14,11 +14,9 @@ export class SpeakerApiService {
   private httpClient = inject(HttpClient);
   private baseUrl = inject(BaseApiUrl);
   private apiSeed = inject(ApiSeed);
-  private readonly pageSize = 50;
+  private readonly pageSize = 10;
 
-  getSpeakers(
-    page: number = 1,
-  ): Observable<Speaker[]> {
+  getSpeakers(page: number): Observable<Speaker[]> {
     return this.httpClient
       .get<SpeakerResponse>(this.baseUrl, {
         params: {

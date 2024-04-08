@@ -1,27 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Speaker } from '../../models/speaker.type';
+import { Injectable, inject } from '@angular/core';
 import {
   BehaviorSubject,
   Observable,
   combineLatest,
-  debounce,
   debounceTime,
   distinctUntilChanged,
   map,
+  merge,
   of,
-  pairwise,
-  reduce,
-  scan,
-  shareReplay,
   startWith,
   switchMap,
-  take,
-  tap,
 } from 'rxjs';
-import { SpeakerApiService } from '../speaker-api/speaker-api.service';
-import { inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { debounceDuration } from '../../../../core/forms/constants/debounce-duration.constant';
+import { Speaker } from '../../models/speaker.type';
+import { SpeakerApiService } from '../speaker-api/speaker-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,35 +21,34 @@ import { debounceDuration } from '../../../../core/forms/constants/debounce-dura
 export class SpeakerDataService {
   private speakerApiService = inject(SpeakerApiService);
 
-  private _page$ = new BehaviorSubject<number>(1);
-
-  private _allSpeakers$ = this._page$.pipe(
-    switchMap((page) => this.speakerApiService.getSpeakers(page)),
-    // Accumulates speakers from all naviga
-    scan((acc, speakers) => [...acc, ...speakers], [] as Speaker[])
-  );
-
-  filteredSpeakers$(searchInput: Observable<string>): Observable<Speaker[]> {
+  filteredSpeakers$(
+    searchInput: Observable<string>,
+    page: Observable<number>
+  ): Observable<Speaker[] | undefined> {
     return combineLatest([
-      this._allSpeakers$,
+      page.pipe(
+        switchMap((page) =>
+          merge(
+            // 'Loading state' between each page change
+            of(undefined),
+            this.speakerApiService.getSpeakers(page)
+          )
+        )
+      ),
       searchInput.pipe(
         startWith(''),
         debounceTime(debounceDuration),
-        distinctUntilChanged(),
+        distinctUntilChanged()
       ),
     ]).pipe(
       map(([speakers, search]) =>
-        speakers.filter((speaker) => this.speakerIsSearched(speaker, search))
+        speakers?.filter((speaker) => this.speakerIsSearched(speaker, search))
       )
     );
   }
 
   getSpeaker(id: number): Observable<Speaker | undefined> {
     return this.speakerApiService.getSpeaker(id);
-  }
-
-  nextPage() {
-    this._page$.next(this._page$.value + 1);
   }
 
   private speakerIsSearched(speaker: Speaker, search: string): boolean {

@@ -1,33 +1,50 @@
-import { Component, inject, signal } from '@angular/core';
-import { SpeakerApiService } from '../../services/speaker-api/speaker-api.service';
+import { Component, inject } from '@angular/core';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { SpeakerListComponent } from '../../components/speaker-list/speaker-list.component';
 import { SpeakerDataService } from '../../services/speaker-data/speaker-data.service';
-import {
-  FormControl,
-  FormControlDirective,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { startWith } from 'rxjs';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { controlValue$ } from '../../../../core/forms/utils/control-value$';
 import { RouterOutlet } from '@angular/router';
+import { PaginatorComponent } from '../../../../core/tables/paginator/paginator.component';
+import { FormGroup } from '@angular/forms';
+import { BindQueryParamsFactory } from '@ngneat/bind-query-params';
 
 @Component({
   selector: 'app-speaker-list-page',
   standalone: true,
-  imports: [AsyncPipe, JsonPipe, SpeakerListComponent, ReactiveFormsModule, RouterOutlet],
+  imports: [
+    AsyncPipe,
+    JsonPipe,
+    SpeakerListComponent,
+    ReactiveFormsModule,
+    RouterOutlet,
+    PaginatorComponent,
+  ],
   templateUrl: './speaker-list-page.component.html',
   styleUrl: './speaker-list-page.component.scss',
 })
 export class SpeakerListPageComponent {
   private speakerDataService = inject(SpeakerDataService);
+  private queryParamBinder = inject(BindQueryParamsFactory)
 
-  searchInput = new FormControl<string>('');
+  filters = new FormGroup({
+    search: new FormControl<string>(''),
+    page: new FormControl<number>(1),
+  });
+
+  bindQueryParams = this.queryParamBinder.create([
+    { queryKey: 'search' },
+    { queryKey: 'page', type: 'number' }
+  ]).connect(this.filters);
+
   speakers$ = this.speakerDataService.filteredSpeakers$(
-    controlValue$(this.searchInput)
+    controlValue$(this.filters.controls.search),
+    controlValue$(this.filters.controls.page),
   );
 
-  onNextPage() {
-    this.speakerDataService.nextPage();
+  onPage(offset: number) {
+    const currentPage = this.filters.controls.page.value ?? 1;
+    
+    this.filters.controls.page.setValue(currentPage + offset);
   }
 }
