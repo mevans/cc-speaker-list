@@ -1,14 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DialogComponent } from '../../../../core/dialogs/dialog/dialog.component';
-import { SpeakerDataService } from '../../services/speaker-data/speaker-data.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, switchMap } from 'rxjs';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { DialogComponent } from '../../../../core/dialogs/dialog/dialog.component';
+import { SpeakerDetailsComponent } from '../../components/speaker-details/speaker-details.component';
+import { SpeakerDataService } from '../../services/speaker-data/speaker-data.service';
 
 @Component({
   selector: 'app-speaker-detail-page',
   standalone: true,
-  imports: [RouterLink, DialogComponent, AsyncPipe, JsonPipe],
+  imports: [DialogComponent, AsyncPipe, SpeakerDetailsComponent],
   templateUrl: './speaker-detail-page.component.html',
   styleUrl: './speaker-detail-page.component.scss'
 })

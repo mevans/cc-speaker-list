@@ -9,5 +9,4 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'cc-speaker-list';
 }

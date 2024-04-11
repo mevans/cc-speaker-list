@@ -1,7 +1,14 @@
-@for (speaker of speakers; track speaker.id) {
-<a [routerLink]="['/speakers', speaker.id]" queryParamsHandling="merge">
-  <div>
-    {{speaker.id}} {{ speaker.name.title }} {{ speaker.name.first }} {{ speaker.name.last }}
-  </div>
-</a>
-}
+<ul>
+  @if (speakers) {
+    @for (speaker of speakers; track speaker.id) {
+      <app-speaker-list-item [speaker]="speaker"></app-speaker-list-item>
+    } @empty {
+      <li class="p-4 text-center text-gray-500">No speakers found, try another page?</li>
+    }
+  } @else {
+    <!-- Shimmer loading list -->
+    @for (x of [1,2,3,4,5]; track x){
+      <app-speaker-list-item [speaker]="null"></app-speaker-list-item>
+    }
+  }
+</ul>

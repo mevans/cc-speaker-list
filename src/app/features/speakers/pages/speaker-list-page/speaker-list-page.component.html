@@ -1,8 +1,10 @@
-<input [formControl]="filters.controls.search" placeholder="Search..." />
+<input
+  class="w-full rounded-none p-4 sticky top-0 border-b border-gray-200"
+  [formControl]="filters.controls.search"
+  placeholder="Search..."
+/>
 
-@if (speakers$ | async; as speakers) {
-<app-speaker-list [speakers]="speakers"></app-speaker-list>
-}
+<app-speaker-list [speakers]="speakers$ | async"></app-speaker-list>
 
 <app-paginator
   [page]="filters.controls.page.value || 1"

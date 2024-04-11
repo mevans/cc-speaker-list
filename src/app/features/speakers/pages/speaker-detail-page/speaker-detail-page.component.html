@@ -1,5 +1,5 @@
 <app-dialog (close)="onClose()">
-    @if (speaker$ | async; as speaker) {
-        <div>{{ speaker.name | json}}</div>
-    }
+    <div class="flex items-center justify-center w-full h-full">
+        <app-speaker-details [speaker]="speaker$ | async"></app-speaker-details>
+    </div>
 </app-dialog>

@@ -1,0 +1,33 @@
+@if (speaker) {
+  <li
+    class="flex flex-row p-4 items-center gap-x-4 bg-white"
+    [routerLink]="['/speakers', speaker.id]"
+    queryParamsHandling="merge"
+    role="link"
+  >
+    <img
+      [src]="speaker.picture.medium"
+      class="rounded-full w-12 h-12"
+      loading="lazy"
+    />
+    <div class="flex-grow">
+      <p class="text-sm font-semibold text-gray-900 mb-0.5">
+        {{ speaker.name.title }} {{ speaker.name.first }}
+        {{ speaker.name.last }}
+      </p>
+      <p class="text-xs text-gray-500">
+        {{ speaker.email }}
+      </p>
+    </div>
+    <ng-icon class="text-blue-500 mr-2" name="chevronRight"></ng-icon>
+  </li>
+} @else {
+  <!-- Shimmering item, wonder if there is a smarter way to not have to duplicate a lot of the templating... -->
+  <li class="flex flex-row p-4 items-center gap-x-4 bg-white animate-pulse">
+    <div class="rounded-full w-12 h-12 bg-gray-200"></div>
+    <div class="flex-grow">
+      <div class="h-4 bg-gray-200 rounded w-1/2 mb-0.5"></div>
+      <div class="h-3 bg-gray-200 rounded w-1/3"></div>
+    </div>
+  </li>
+}

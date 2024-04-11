@@ -1,4 +1,11 @@
 <ng-template cdkPortal>
-    <button (click)="onClose()">Close</button>
+  <div class="relative w-full h-full">
+    <button
+      class="text-blue-500 text-2xl p-4 absolute top-2 right-2"
+      (click)="onClose()"
+    >
+      <ng-icon name="close"></ng-icon>
+    </button>
     <ng-content></ng-content>
+  </div>
 </ng-template>

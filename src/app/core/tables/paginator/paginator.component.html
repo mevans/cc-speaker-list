@@ -1,5 +1,14 @@
-@if(page > 1) {
-    <button (click)="onPrevious()">Previous</button>
-}
-<span>{{page}}</span>
-<button (click)="onNext()">Next</button>
+<button
+  (click)="onPrevious()"
+  class="p-4 text-blue-500 rounded-md disabled:text-gray-200 flex content-center"
+  [disabled]="page <= 1"
+>
+  <ng-icon name="chevronLeft"></ng-icon>
+</button>
+<span class="text-gray-700 text-sm">{{ page }}</span>
+<button
+  (click)="onNext()"
+  class="p-4 text-blue-500 flex content-center"
+>
+  <ng-icon name="chevronRight"></ng-icon>
+</button>

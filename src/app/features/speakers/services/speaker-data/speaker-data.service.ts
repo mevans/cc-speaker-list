@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import {
-  BehaviorSubject,
   Observable,
   combineLatest,
   debounceTime,
@@ -9,7 +8,7 @@ import {
   merge,
   of,
   startWith,
-  switchMap,
+  switchMap
 } from 'rxjs';
 import { debounceDuration } from '../../../../core/forms/constants/debounce-duration.constant';
 import { Speaker } from '../../models/speaker.type';
@@ -19,7 +18,7 @@ import { SpeakerApiService } from '../speaker-api/speaker-api.service';
   providedIn: 'root',
 })
 export class SpeakerDataService {
-  private speakerApiService = inject(SpeakerApiService);
+  private readonly speakerApiService = inject(SpeakerApiService);
 
   filteredSpeakers$(
     searchInput: Observable<string>,
@@ -47,6 +46,7 @@ export class SpeakerDataService {
     );
   }
 
+  // Could use a cache system in this service to avoid fetching the same speaker multiple times
   getSpeaker(id: number): Observable<Speaker | undefined> {
     return this.speakerApiService.getSpeaker(id);
   }

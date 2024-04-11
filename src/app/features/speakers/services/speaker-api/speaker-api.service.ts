@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map, tap, delay } from 'rxjs/operators';
 import { BaseApiUrl } from '../../../../core/tokens/base-api-url.token';
 import { Speaker } from '../../models/speaker.type';
 import { SpeakerResponse } from '../../models/speakers-response.type';
@@ -11,9 +11,9 @@ import { ApiSeed } from '../../../../core/tokens/api-seed.token';
   providedIn: 'root',
 })
 export class SpeakerApiService {
-  private httpClient = inject(HttpClient);
-  private baseUrl = inject(BaseApiUrl);
-  private apiSeed = inject(ApiSeed);
+  private readonly httpClient = inject(HttpClient);
+  private readonly baseUrl = inject(BaseApiUrl);
+  private readonly apiSeed = inject(ApiSeed);
   private readonly pageSize = 10;
 
   getSpeakers(page: number): Observable<Speaker[]> {
@@ -34,11 +34,11 @@ export class SpeakerApiService {
       );
   }
 
-  // The API doesn't support fetching a specific speaker by ID
-  // So we need to fetch the initial page they are on, and then find the speaker by ID
   getSpeaker(id: number): Observable<Speaker | undefined> {
+    // The API doesn't support fetching a specific speaker by ID
+    // So we need to fetch the page they are on, and then find the speaker by ID
     const containingPage = this.determinePage(id, this.pageSize);
-    
+
     return this.getSpeakers(containingPage).pipe(
       map((speakers) => speakers.find((speaker) => speaker.id === id)),
     );

@@ -2,20 +2,22 @@ import { AfterViewInit, Component, EventEmitter, Output, ViewChild, inject } fro
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { CdkPortal } from '@angular/cdk/portal';
 import { ViewEncapsulation } from '@angular/core';
-import { take } from 'rxjs';
-import { Router } from '@angular/router';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { matCloseSharp } from '@ng-icons/material-icons/sharp';
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
-  imports: [CdkPortal],
+  imports: [CdkPortal, NgIconComponent],
   templateUrl: './dialog.component.html',
   styleUrl: './dialog.component.scss',
   encapsulation: ViewEncapsulation.None,
+  providers: [provideIcons({
+    close: matCloseSharp,
+  })]
 })
 export class DialogComponent implements AfterViewInit {
   private readonly overlay = inject(Overlay);
-  private readonly router = inject(Router);
   @ViewChild(CdkPortal) private readonly portal: CdkPortal | undefined;
 
   private overlayConfig = new OverlayConfig({
