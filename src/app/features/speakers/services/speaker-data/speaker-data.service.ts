@@ -8,7 +8,7 @@ import {
   merge,
   of,
   startWith,
-  switchMap
+  switchMap,
 } from 'rxjs';
 import { debounceDuration } from '../../../../core/forms/constants/debounce-duration.constant';
 import { Speaker } from '../../models/speaker.type';
@@ -52,8 +52,10 @@ export class SpeakerDataService {
   }
 
   private speakerIsSearched(speaker: Speaker, search: string): boolean {
-    return (
-      speaker.name.first.includes(search) || speaker.name.last.includes(search)
+    const normalizedSearch = search.trim().toLocaleLowerCase();
+    const fields = [speaker.name.first, speaker.name.last, speaker.email].map(
+      (field) => field.toLocaleLowerCase()
     );
+    return fields.some((field) => field.includes(normalizedSearch));
   }
 }
